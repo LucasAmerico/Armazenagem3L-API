@@ -10,6 +10,10 @@ namespace Armazenagem3L_API.Models {
     public class Motorista {
 
         public Motorista() { }
+        public Motorista(int Id, String Nome) {
+            this.Id = Id;
+            this.Nome = Nome;
+        }
 
         [Key]
         public int Id { get; set; }

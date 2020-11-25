@@ -77,6 +77,13 @@ namespace Armazenagem3L_API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Motoristas", "Armazenagem3L");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nome = "Bino"
+                        });
                 });
 
             modelBuilder.Entity("Armazenagem3L_API.Models.Produto", b =>
@@ -119,13 +126,13 @@ namespace Armazenagem3L_API.Migrations
             modelBuilder.Entity("Armazenagem3L_API.Models.Produto", b =>
                 {
                     b.HasOne("Armazenagem3L_API.Models.Carga", null)
-                        .WithMany("produtos")
+                        .WithMany("Produtos")
                         .HasForeignKey("CargaId");
                 });
 
             modelBuilder.Entity("Armazenagem3L_API.Models.Carga", b =>
                 {
-                    b.Navigation("produtos");
+                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

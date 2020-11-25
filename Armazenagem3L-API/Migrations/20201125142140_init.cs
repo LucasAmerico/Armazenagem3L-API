@@ -91,6 +91,12 @@ namespace Armazenagem3L_API.Migrations
                 columns: new[] { "Id", "Nome" },
                 values: new object[] { 1, "Lauro" });
 
+            migrationBuilder.InsertData(
+                schema: "Armazenagem3L",
+                table: "Motoristas",
+                columns: new[] { "Id", "Nome" },
+                values: new object[] { 1, "Bino" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Cargas_MotoristaId",
                 schema: "Armazenagem3L",

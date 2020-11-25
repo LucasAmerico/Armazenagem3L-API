@@ -20,6 +20,11 @@ namespace Armazenagem3L_API.Data {
                     new Funcionario(1, "Lauro"),
                     });
 
+            builder.Entity<Motorista>()
+                    .HasData(new List<Motorista>(){
+                    new Motorista(1, "Bino"),
+                    });
+
         }
     }
 }
