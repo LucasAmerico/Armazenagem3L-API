@@ -28,7 +28,7 @@ namespace Armazenagem3L_API {
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Armazenagem3L_API", Version = "v1" });
             });
-            services.AddEntityFrameworkNpgsql().AddDbContext<DataContext>(
+            services.AddDbContext<DataContext>(
                 context => context.UseNpgsql(Configuration.GetConnectionString("Armazenagem3LDB"))
             );
         }

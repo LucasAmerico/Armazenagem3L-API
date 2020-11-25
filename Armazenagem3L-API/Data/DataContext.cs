@@ -12,5 +12,14 @@ namespace Armazenagem3L_API.Data {
         public DbSet<Funcionario> Funcionarios { get; set; }
         public DbSet<Motorista> Motorista { get; set; }
         public DbSet<Produto> Produto { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder) {
+
+            builder.Entity<Funcionario>()
+                    .HasData(new List<Funcionario>(){
+                    new Funcionario(1, "Lauro"),
+                    });
+
+        }
     }
 }
