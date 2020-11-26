@@ -1,4 +1,7 @@
 using Armazenagem3L_API.Data;
+using Armazenagem3L_API.Repositories;
+using Armazenagem3L_API.Repositories.impl;
+using Armazenagem3L_API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +26,9 @@ namespace Armazenagem3L_API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-
+         
+            services.AddScoped<IProdutosRepository, ProdutosRepositoryImpl>();
+            services.AddScoped<ProdutosService, ProdutosService>();
             services.AddControllers();
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Armazenagem3L_API", Version = "v1" });
