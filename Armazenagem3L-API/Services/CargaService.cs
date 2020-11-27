@@ -22,6 +22,42 @@ namespace Armazenagem3L_API.Services {
             _logger = logger;
         }
 
+        public Carga[] listagemCargas()
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): listagemProdutos");
+
+            Carga[] result = _repository.GetCargas();
+
+            return result;
+        }
+
+        public Carga cargaByIdAndMotoristaId(int cargaId, int motoristaId)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): cargaByIdAndMotoristaId  => carga " + JsonSerializer.Serialize(cargaId) + " motorista " + JsonSerializer.Serialize(motoristaId));
+
+            Carga result = _repository.cargaByIdAndMotoristaId(cargaId, motoristaId);
+
+            return result;
+        }
+
+        public Carga[] cargaByMotoristaId(int id)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
+
+            Carga[] result = _repository.cargaByMotoristaId(id);
+
+            return result;
+        }
+
+        public Carga cargaById(int id)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
+
+            Carga result = _repository.GetCargaById(id);
+
+            return result;
+        }
+
         public CustomResponse Add(Carga carga) {
             _logger.LogDebug("[INFO] Executando funcao (Service): Add Carga =>" + JsonSerializer.Serialize(carga));
             ArrayList ProdutosAlterados = new ArrayList();

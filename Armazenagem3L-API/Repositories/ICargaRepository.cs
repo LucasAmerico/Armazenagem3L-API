@@ -16,6 +16,11 @@ namespace Armazenagem3L_API.Repositories {
         void DeleteCargaProduto(CargaProduto cargaProduto);
         void DeleteCarga(Carga carga);
         void Update(Carga carga);
+        Carga[] GetCargas();
+        Carga GetCargaById(int cargaId);
+        Carga[] cargaByMotoristaId(int motoristaId);
+        Carga cargaByIdAndMotoristaId(int cargaId, int motoristaId);
+
 
     }
 }

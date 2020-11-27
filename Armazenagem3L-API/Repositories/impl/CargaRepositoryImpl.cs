@@ -28,29 +28,63 @@ namespace Armazenagem3L_API.Repositories.impl {
             _context.Add(cargaProduto);
         }
 
-        public void DeleteCarga(Carga carga)
-        {
+        public Carga cargaByIdAndMotoristaId(int cargaId, int motoristaId) {
+            _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): cargaByIdAndMotoristaId => carga " + JsonSerializer.Serialize(cargaId) + " motorista " + JsonSerializer.Serialize(motoristaId));
+            IQueryable<Carga> query = _context.Cargas;
+
+            return query.AsNoTracking().OrderBy(c => c.Id)
+                .Where(carga => (carga.Id == cargaId) && (carga.MotoristaId == motoristaId)).FirstOrDefault();
+        }
+
+        public Carga[] cargaByMotoristaId(int motoristaId) {
+            _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): cargaByMotoristaId => " + JsonSerializer.Serialize(motoristaId));
+            IQueryable<Carga> query = _context.Cargas;
+
+            return query.AsNoTracking().OrderBy(c => c.Id).Where(carga => carga.MotoristaId == motoristaId).ToArray();
+        }
+
+        public void DeleteCarga(Carga carga) {
             _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): DeleteCarga =>" + JsonSerializer.Serialize(carga));
             _context.Remove(carga);
         }
 
-        public void DeleteCargaProduto(CargaProduto cargaProduto)
-        {
+        public void DeleteCargaProduto(CargaProduto cargaProduto) {
             _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): DeleteCargaProdutos =>" + JsonSerializer.Serialize(cargaProduto));
             _context.Remove(cargaProduto);
         }
-
+        
         public Carga FindById(int Id) {
             _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): FindById Carga =>" + JsonSerializer.Serialize(Id));
            return _context.Cargas.AsNoTracking().OrderBy(p => p.Id).Where(c => c.Id == Id).FirstOrDefault();
         }
 
-        public IEnumerable<CargaProduto> FindCargaProdutos(int Id)
-        {
+        public Carga GetCargaById(int cargaId) {
+            _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): GetCargaById => " + JsonSerializer.Serialize(cargaId));
+            IQueryable<Carga> query = _context.Cargas;
+            IQueryable<CargaProduto> queryCargaProduto = _context.CargaProdutos;
+            IQueryable<Motorista> queryMotorista = _context.Motorista;
+
+            Carga carga = query.AsNoTracking().OrderBy(c => c.Id).Where(carga => carga.Id == cargaId).FirstOrDefault();
+
+            Motorista motorista = queryMotorista.AsNoTracking().OrderBy(m => m.Id).Where(motorista => motorista.Id == carga.MotoristaId).FirstOrDefault();
+
+            carga.Motorista = motorista;
+
+            return carga;
+        }
+
+        public Carga[] GetCargas() {
+            _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): GetProdutos");
+            IQueryable<Carga> query = _context.Cargas;
+
+            return query.AsNoTracking().OrderBy(c => c.Id).ToArray();
+        }
+
+        public IEnumerable<CargaProduto> FindCargaProdutos(int Id) {
             _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): FindCargaProdutos =>" + JsonSerializer.Serialize(Id));
             return _context.CargaProdutos.AsNoTracking().OrderBy(p => p.CargaId).Where(c => c.CargaId == Id).ToList();
         }
-
+        
         public Carga GetLast() {
             return _context.Cargas.OrderBy(c => c.Id).Last();
         }
