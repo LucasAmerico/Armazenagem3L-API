@@ -12,6 +12,9 @@ namespace Armazenagem3L_API.Repositories {
         Carga FindById(int Id);
         bool SaveChanges();
         Carga GetLast();
+        IEnumerable<CargaProduto> FindCargaProdutos(int Id);
+        void DeleteCargaProduto(CargaProduto cargaProduto);
+        void DeleteCarga(Carga carga);
         void Update(Carga carga);
 
     }
