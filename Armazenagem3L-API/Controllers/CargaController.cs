@@ -30,10 +30,31 @@ namespace Armazenagem3L_API.Controllers {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id) {
-            return "value";
+        // GET api/carga/listagem?id=5&motorista=1
+        [HttpGet("listagem")]
+        public IActionResult Get(int id = 0, int motorista = 0)
+        {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): GET Carga id =>" + JsonSerializer.Serialize(id));
+
+            var result = new object();
+
+            if (id == 0 && motorista == 0)
+            {
+                result = _service.listagemCargas();
+            }
+            if (id > 0 && motorista == 0)
+            {
+                result = _service.cargaById(id);
+            }
+            if (id == 0 && motorista > 0)
+            {
+                result = _service.cargaByMotoristaId(motorista);
+            }
+            else if (id > 0 && motorista > 0)
+            {
+                result = _service.cargaByIdAndMotoristaId(id, motorista);
+            }
+            return Ok(result);
         }
 
         // POST api/<ValuesController>

@@ -13,6 +13,11 @@ namespace Armazenagem3L_API.Repositories {
         bool SaveChanges();
         Carga GetLast();
         void Update(Carga carga);
+        Carga[] GetCargas();
+        Carga GetCargaById(int cargaId);
+        Carga[] cargaByMotoristaId(int motoristaId);
+        Carga cargaByIdAndMotoristaId(int cargaId, int motoristaId);
+
 
     }
 }
