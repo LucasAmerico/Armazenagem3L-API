@@ -1,24 +1,20 @@
 ﻿using Armazenagem3L_API.Data;
 using Armazenagem3L_API.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Armazenagem3L_API.Repositories.impl
-{
-    public class ProdutosRepositoryImpl : IProdutosRepository
-    {
+namespace Armazenagem3L_API.Repositories.impl {
+    public class ProdutosRepositoryImpl : IProdutosRepository {
+        
         private readonly DataContext _context;
 
-        public ProdutosRepositoryImpl(DataContext context)
-        {
+        public ProdutosRepositoryImpl(DataContext context) {
             _context = context;
         }
 
-        public Produto GetProdutoById(int produtoId)
-        {
+        public Produto GetProdutoById(int produtoId) {
             IQueryable<Produto> query = _context.Produto;
 
             query = query.AsNoTracking()
@@ -28,8 +24,7 @@ namespace Armazenagem3L_API.Repositories.impl
             return query.FirstOrDefault();
         }
 
-        public Produto[] GetProdutos()
-        {
+        public Produto[] GetProdutos() {
             IQueryable<Produto> query = _context.Produto;
 
             query = query.AsNoTracking()
@@ -37,11 +32,13 @@ namespace Armazenagem3L_API.Repositories.impl
 
             return query.ToArray();
         }
-
-        public bool SaveChanges()
-        {
-            return (_context.SaveChanges() > 0);
+        
+        public void Add(Produto produto) { 
+            _context.Add(produto);
         }
 
+        public bool SaveChanges() {
+            return (_context.SaveChanges() > 0);
+        }
     }
 }
