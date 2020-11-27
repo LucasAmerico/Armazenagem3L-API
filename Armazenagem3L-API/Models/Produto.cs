@@ -22,20 +22,20 @@ namespace Armazenagem3L_API.Models {
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo Nome Faltando")]
         public string Nome { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo Peso Faltando")]
         [Column(TypeName = "decimal(8, 3)")]
         public decimal Peso { get; set; }
 
-        [Required]
-        [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "Campo Preço Faltando")]
+        [DataType(DataType.Currency, ErrorMessage = "O Valor do campo esta fora do padrão (18,2)")]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Preco { get; set; }
 
-        [Required]
-        [Range(1, 999)]
+        [Required(ErrorMessage = "Campo Faltando")]
+        [Range(1, 999, ErrorMessage = "O valor deve esta entre 9 e 999")]
         public int Qtd { get; set; }
 
     }

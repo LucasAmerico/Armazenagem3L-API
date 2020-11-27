@@ -14,11 +14,12 @@ namespace Armazenagem3L_API.Services {
         private readonly ICargaRepository _repository;
         private readonly ILoggerManager _logger;
         private readonly IProdutosRepository _produto;
+        private readonly IMotoristaRepository _motorista;
 
-
-        public CargaService(ICargaRepository carga, IProdutosRepository produto, ILoggerManager logger) {
+        public CargaService(ICargaRepository carga, IProdutosRepository produto, IMotoristaRepository motorista, ILoggerManager logger) {
             _repository = carga;
             _produto = produto;
+            _motorista = motorista;
             _logger = logger;
         }
 
@@ -28,6 +29,12 @@ namespace Armazenagem3L_API.Services {
 
             Carga[] result = _repository.GetCargas();
 
+            if(result.Length > 0) {
+                foreach (var item in result) {
+                    BuscaProdutos(item);
+                }
+            }
+
             return result;
         }
 
@@ -35,9 +42,15 @@ namespace Armazenagem3L_API.Services {
         {
             _logger.LogDebug("[INFO] Executando funcao (Service): cargaByIdAndMotoristaId  => carga " + JsonSerializer.Serialize(cargaId) + " motorista " + JsonSerializer.Serialize(motoristaId));
 
-            Carga result = _repository.cargaByIdAndMotoristaId(cargaId, motoristaId);
+            var carga = _repository.cargaByIdAndMotoristaId(cargaId, motoristaId);
 
-            return result;
+            if (carga == null) {
+                return carga;
+            } else {
+                BuscaProdutos(carga);
+            }
+
+            return carga;
         }
 
         public Carga[] cargaByMotoristaId(int id)
@@ -46,6 +59,11 @@ namespace Armazenagem3L_API.Services {
 
             Carga[] result = _repository.cargaByMotoristaId(id);
 
+            if (result.Length > 0) {
+                foreach (var item in result) {
+                    BuscaProdutos(item);
+                }
+            }
             return result;
         }
 
@@ -53,9 +71,15 @@ namespace Armazenagem3L_API.Services {
         {
             _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
 
-            Carga result = _repository.GetCargaById(id);
+            Carga carga = _repository.GetCargaById(id);
 
-            return result;
+            if(carga == null) {
+                return carga;
+            } else {
+                BuscaProdutos(carga);
+            }
+
+            return carga;
         }
 
         public CustomResponse Add(Carga carga) {
@@ -165,6 +189,18 @@ namespace Armazenagem3L_API.Services {
                 _produto.Update((Produto)item);
             }
         } 
+
+        private void BuscaProdutos(Carga carga) {
+
+            carga.Motorista = _motorista.FindById(carga.MotoristaId);
+            var cargaProduto = _repository.FindCargaProdutos(carga.Id);
+            ArrayList produtos = new ArrayList();
+            foreach (var item in cargaProduto) {
+                produtos.Add(_produto.GetProdutoById(item.ProdutoId));
+            }
+
+            carga.ListaProdutos = produtos;
+        }
 
     }
 }

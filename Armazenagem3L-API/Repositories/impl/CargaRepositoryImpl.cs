@@ -61,7 +61,7 @@ namespace Armazenagem3L_API.Repositories.impl {
         public Carga GetCargaById(int cargaId) {
             _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): GetCargaById => " + JsonSerializer.Serialize(cargaId));
             IQueryable<Carga> query = _context.Cargas;
-            IQueryable<CargaProduto> queryCargaProduto = _context.CargaProdutos;
+            //IQueryable<CargaProduto> queryCargaProduto = _context.CargaProdutos;
             IQueryable<Motorista> queryMotorista = _context.Motorista;
 
             Carga carga = query.AsNoTracking().OrderBy(c => c.Id).Where(carga => carga.Id == cargaId).FirstOrDefault();
