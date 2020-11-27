@@ -10,14 +10,24 @@ namespace Armazenagem3L_API.Models {
     public class Carga {
 
         public Carga() { }
+
+        public Carga(string endereco, decimal frete, int motoristaId, IEnumerable<ProdutoQtd> produtos) {
+            Endereco = endereco;
+            Frete = frete;
+            MotoristaId = motoristaId;
+            Produtos = produtos;
+        }
+
         [Key]
         public int Id { get; set; }
-        public List<Produto> Produtos { get; set; }
         public string Endereco { get; set; }
         public decimal Frete { get; set; }
-        [Required]
-        public virtual Motorista Motorista { get; set; }
-        public virtual int MotoristaId { get; set; }
+        public int MotoristaId { get; set; }
 
+        [NotMapped]
+        public IEnumerable<ProdutoQtd> Produtos { get; set; }
+
+        [NotMapped]
+        public Motorista Motorista { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace Armazenagem3L_API.Repositories {
 
         void Add(Produto produto);
 
+        void Update(Produto produto);
+        
         void Delete(Produto produto);
         
         bool SaveChanges();
