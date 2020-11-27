@@ -18,5 +18,8 @@ namespace Armazenagem3L_API.Util {
         public const string PRODUTO_NAO_ENCONTRADO = "Produto não encontrado";
         public const string DELETAR_PRODUTO = "Produto deletado com sucesso";
         public const string ERRO_DELETAR_PRODUTO = "Não foi possível deletar o produto";
+        public const string CARGA_NAO_ENCONTRADA = "Carga não encontrada";
+        public const string ERRO_DELETAR_CARGA = "Não foi possível deletar a carga";
+        public const string DELETAR_CARGA = "Carga deletada com sucesso";
     }
 }

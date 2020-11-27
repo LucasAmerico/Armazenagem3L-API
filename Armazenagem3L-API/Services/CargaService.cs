@@ -127,6 +127,39 @@ namespace Armazenagem3L_API.Services {
 
         }
 
+        public CustomResponse DeletarCarga(int id)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): DeletarCarga =>" + JsonSerializer.Serialize(id));
+            try
+            {
+                Carga carga = _repository.FindById(id);
+                if (carga == null)
+                {
+                    return new CustomResponse(HttpStatusCode.BadRequest, new CustomMessage(Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA));
+                }
+                else
+                {
+                    var ListaCargas = _repository.FindCargaProdutos(carga.Id);
+                    foreach (var item in ListaCargas)
+                    {
+                        _repository.DeleteCargaProduto(item);
+                    }
+                    _repository.DeleteCarga(carga);
+                }
+                
+                if (_repository.SaveChanges())
+                {
+                    return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_CARGA));
+                }
+                return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_DELETAR_CARGA));
+            }
+            catch (HttpResponseException ex)
+            {
+                _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): DeleteCarga =>" + JsonSerializer.Serialize(ex.InnerException));
+                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, JsonSerializer.Serialize(ex.InnerException)));
+            }
+        }
+
         public void AtualizaProdutos(ArrayList produtos) {
             foreach (var item in produtos) {
                 _produto.Update((Produto)item);

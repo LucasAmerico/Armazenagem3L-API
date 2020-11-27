@@ -77,7 +77,11 @@ namespace Armazenagem3L_API.Controllers {
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id) {
+        public IActionResult Delete(int id)
+        {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): DELETE Carga id =>" + JsonSerializer.Serialize(id));
+            CustomResponse response = _service.DeletarCarga(id);
+            return StatusCode((int)response.StatusCode, response.Mensagem);
         }
     }
 }
