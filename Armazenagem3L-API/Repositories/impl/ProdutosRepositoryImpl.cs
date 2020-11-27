@@ -1,5 +1,6 @@
 ﻿using Armazenagem3L_API.Data;
 using Armazenagem3L_API.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,10 @@ namespace Armazenagem3L_API.Repositories.impl {
             _context.Add(produto);
         }
 
+        public void Delete(Produto produto) {
+            _context.Remove(produto);
+        }
+        
         public bool SaveChanges() {
             return (_context.SaveChanges() > 0);
         }

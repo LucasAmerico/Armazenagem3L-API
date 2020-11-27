@@ -53,6 +53,17 @@ namespace Armazenagem3L_API.Services {
 
         }
 
+        public string DeletarProduto(int id) {
+            Produto produto = _repository.GetProdutoById(id);
+            if (produto == null) {
+                return "Produto não encontrado";
+            }
+            _repository.Delete(produto);
+            if (_repository.SaveChanges()) {
+                return "Produto deletado com sucesso";
+            }
+            return "Não foi possível deletar o produto";
+        }
 
     }
 }
