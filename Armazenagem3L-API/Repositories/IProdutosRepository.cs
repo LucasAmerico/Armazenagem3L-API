@@ -4,12 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Armazenagem3L_API.Repositories
-{
+namespace Armazenagem3L_API.Repositories {
     public interface IProdutosRepository {
 
-        void Delete(Produto produto);
+        Produto[] GetProdutos();
+
         Produto GetProdutoById(int produtoId);
+
+        void Add(Produto produto);
+
+        void Delete(Produto produto);
+        
         bool SaveChanges();
     }
 }
