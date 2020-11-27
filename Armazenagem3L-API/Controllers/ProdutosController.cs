@@ -1,4 +1,4 @@
-﻿using Armazenagem3L_API.Data;
+using Armazenagem3L_API.Data;
 using Armazenagem3L_API.Models;
 using Armazenagem3L_API.Services;
 using Armazenagem3L_API.Util;
@@ -22,6 +22,21 @@ namespace Armazenagem3L_API.Controllers {
             _service = service;
         }
 
+        // GET api/produto/listagem?id=5
+        [HttpGet("listagem")]
+        public IActionResult Listagem(int id = 0)
+        {
+            var result = new object();
+
+            if (id == 0) {
+               result = _service.listagemProdutos();
+            } else
+            {
+                result = _service.produtosById(id);
+            }
+            return Ok(result);
+        }
+        
         // GET: api/<ProdutosController>
         [HttpGet]
         public IEnumerable<Funcionario> Get() {

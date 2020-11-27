@@ -14,6 +14,25 @@ namespace Armazenagem3L_API.Repositories.impl {
             _context = context;
         }
 
+        public Produto GetProdutoById(int produtoId) {
+            IQueryable<Produto> query = _context.Produto;
+
+            query = query.AsNoTracking()
+                .OrderBy(p => p.Id)
+                .Where(produto => produto.Id == produtoId);
+
+            return query.FirstOrDefault();
+        }
+
+        public Produto[] GetProdutos() {
+            IQueryable<Produto> query = _context.Produto;
+
+            query = query.AsNoTracking()
+                .OrderBy(p => p.Id);
+
+            return query.ToArray();
+        }
+        
         public void Add(Produto produto) { 
             _context.Add(produto);
         }

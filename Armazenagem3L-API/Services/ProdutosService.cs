@@ -19,6 +19,20 @@ namespace Armazenagem3L_API.Services {
             _repository = repository;
         }
 
+        public Produto[] listagemProdutos() {
+
+            Produto[] result = _repository.GetProdutos();
+
+            return result;
+        }
+
+        public Produto produtosById(int id) {
+
+            Produto result = _repository.GetProdutoById(id);
+
+            return result;
+        }
+        
         public CustomMessage Add(Produto produto) {
 
             try {
