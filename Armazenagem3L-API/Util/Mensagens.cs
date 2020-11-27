@@ -15,5 +15,8 @@ namespace Armazenagem3L_API.Util {
         public const string ERRO_GERAL = "Não foi possível realizar a operação desejada, tente novamente mais tarde!";
         public const string ERRO_BUSCA_PRODUTO = "Não foi possível realizar a operação desejada, um produto da lista não existe!";
         public const string ERRO_SALVAR_CARGA = "A quatidade de um produto excede seu estoque!";
+        public const string PRODUTO_NAO_ENCONTRADO = "Produto não encontrado";
+        public const string DELETAR_PRODUTO = "Produto deletado com sucesso";
+        public const string ERRO_DELETAR_PRODUTO = "Não foi possível deletar o produto";
     }
 }

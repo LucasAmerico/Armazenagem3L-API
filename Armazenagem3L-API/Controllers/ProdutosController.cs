@@ -31,6 +31,8 @@ namespace Armazenagem3L_API.Controllers {
         // GET api/produto/listagem?id=5
         [HttpGet("listagem")]
         public IActionResult Get(int id = 0) {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): GET Produto id =>" + JsonSerializer.Serialize(id));
+
             var result = new object();
 
             if (id == 0) {
@@ -51,9 +53,10 @@ namespace Armazenagem3L_API.Controllers {
 
         // DELETE api/<ProdutosController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id) {
-            var resultado = _service.DeletarProduto(id);
-            return Ok(resultado);
+        public IActionResult Delete(int id) {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): DELETE Produto id =>" + JsonSerializer.Serialize(id));
+            CustomResponse response = _service.DeletarProduto(id);
+            return StatusCode((int)response.StatusCode, response.Mensagem);
         }
     }
 }

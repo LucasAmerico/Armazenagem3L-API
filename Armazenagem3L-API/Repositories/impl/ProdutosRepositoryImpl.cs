@@ -2,8 +2,6 @@
 using Armazenagem3L_API.Logger;
 using Armazenagem3L_API.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 

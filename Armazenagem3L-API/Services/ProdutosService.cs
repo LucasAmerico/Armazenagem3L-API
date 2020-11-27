@@ -50,18 +50,23 @@ namespace Armazenagem3L_API.Services {
 
         }
 
-        public string DeletarProduto(int id) {
+        public CustomResponse DeletarProduto(int id) {
             _logger.LogDebug("[INFO] Executando funcao (Service): Deletar Produto =>" + JsonSerializer.Serialize(id));
-
-            Produto produto = _repository.GetProdutoById(id);
-            if (produto == null) {
-                return "Produto não encontrado";
+            try {
+                Produto produto = _repository.GetProdutoById(id);
+                if (produto == null) {
+                    return new CustomResponse(HttpStatusCode.BadRequest, new CustomMessage(Mensagens.ERRO, Mensagens.PRODUTO_NAO_ENCONTRADO));
+                }
+                _repository.Delete(produto);
+                if (_repository.SaveChanges()) {
+                    return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_PRODUTO));
+                }
+                return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_DELETAR_PRODUTO));
             }
-            _repository.Delete(produto);
-            if (_repository.SaveChanges()) {
-                return "Produto deletado com sucesso";
+            catch (HttpResponseException ex) {
+                _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): Add Produto =>" + JsonSerializer.Serialize(ex.InnerException));
+                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, JsonSerializer.Serialize(ex.InnerException)));
             }
-            return "Não foi possível deletar o produto";
         }
 
     }
