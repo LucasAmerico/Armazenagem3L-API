@@ -9,6 +9,10 @@ namespace Armazenagem3L_API.Repositories {
 
         void Add(Produto produto);
 
+        Produto GetProdutoById(int produtoId);
+
+        void Update(Produto produto);
+
         bool SaveChanges();
     }
 }

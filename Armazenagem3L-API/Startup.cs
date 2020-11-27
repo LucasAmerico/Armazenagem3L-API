@@ -1,4 +1,6 @@
 using Armazenagem3L_API.Data;
+using Armazenagem3L_API.Logger;
+using Armazenagem3L_API.Logger.Impl;
 using Armazenagem3L_API.Repositories;
 using Armazenagem3L_API.Repositories.impl;
 using Armazenagem3L_API.Services;
@@ -11,14 +13,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Armazenagem3L_API {
     public class Startup {
         public Startup(IConfiguration configuration) {
+            LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -27,15 +33,24 @@ namespace Armazenagem3L_API {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
 
+            
+            services.AddScoped<ICargaRepository, CargaRepositoryImpl>();
+            services.AddScoped<CargaService, CargaService>();
+
+
             services.AddScoped<IProdutosRepository, ProdutosRepositoryImpl>();
             services.AddScoped<ProdutosService, ProdutosService>();
-            services.AddControllers();
+
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+
+            services.AddControllers().AddNewtonsoftJson(
+                opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Armazenagem3L_API", Version = "v1" });
             });
             services.AddDbContext<DataContext>(
                 context => context.UseNpgsql(Configuration.GetConnectionString("Armazenagem3LDB"))
-            );
+            );//, options => options.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorCodesToAdd: null)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
