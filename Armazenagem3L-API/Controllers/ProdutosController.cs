@@ -1,4 +1,4 @@
-﻿using Armazenagem3L_API.Data;
+using Armazenagem3L_API.Data;
 using Armazenagem3L_API.Logger;
 using Armazenagem3L_API.Models;
 using Armazenagem3L_API.Services;
@@ -28,16 +28,17 @@ namespace Armazenagem3L_API.Controllers {
             _logger = logger;
         }
 
-        // GET: api/<ProdutosController>
-        [HttpGet]
-        public IEnumerable<Funcionario> Get() {
-            return null;
-        }
+        // GET api/produto/listagem?id=5
+        [HttpGet("listagem")]
+        public IActionResult Get(int id = 0) {
+            var result = new object();
 
-        // GET api/<ProdutosController>/5
-        [HttpGet("{id}")]
-        public string Get(int id) {
-            return "value";
+            if (id == 0) {
+               result = _service.listagemProdutos();
+            } else {
+                result = _service.produtosById(id);
+            }
+            return Ok(result);
         }
 
         // POST api/<ProdutosController>
@@ -48,14 +49,11 @@ namespace Armazenagem3L_API.Controllers {
           return StatusCode((int)response.StatusCode, response.Mensagem);
         }
 
-        // PUT api/<ProdutosController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value) {
-        }
-
         // DELETE api/<ProdutosController>/5
         [HttpDelete("{id}")]
         public void Delete(int id) {
+            var resultado = _service.DeletarProduto(id);
+            return Ok(resultado);
         }
     }
 }

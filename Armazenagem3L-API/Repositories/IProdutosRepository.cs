@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 namespace Armazenagem3L_API.Repositories {
     public interface IProdutosRepository {
 
-        void Add(Produto produto);
+        Produto[] GetProdutos();
 
         Produto GetProdutoById(int produtoId);
 
-        void Update(Produto produto);
+        void Add(Produto produto);
 
+        void Update(Produto produto);
+        
+        void Delete(Produto produto);
+        
         bool SaveChanges();
     }
 }

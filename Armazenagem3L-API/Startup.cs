@@ -32,11 +32,9 @@ namespace Armazenagem3L_API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
-
             
             services.AddScoped<ICargaRepository, CargaRepositoryImpl>();
             services.AddScoped<CargaService, CargaService>();
-
 
             services.AddScoped<IProdutosRepository, ProdutosRepositoryImpl>();
             services.AddScoped<ProdutosService, ProdutosService>();
@@ -50,7 +48,7 @@ namespace Armazenagem3L_API {
             });
             services.AddDbContext<DataContext>(
                 context => context.UseNpgsql(Configuration.GetConnectionString("Armazenagem3LDB"))
-            );//, options => options.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorCodesToAdd: null)
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

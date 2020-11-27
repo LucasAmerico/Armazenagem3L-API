@@ -19,6 +19,22 @@ namespace Armazenagem3L_API.Services {
             _logger = logger;
         }
 
+        public Produto[] listagemProdutos() {
+            _logger.LogDebug("[INFO] Executando funcao (Service): listagemProdutos");
+
+            Produto[] result = _repository.GetProdutos();
+
+            return result;
+        }
+
+        public Produto produtosById(int id) {
+            _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
+
+            Produto result = _repository.GetProdutoById(id);
+
+            return result;
+        }
+        
         public CustomResponse Add(Produto produto) {
             _logger.LogDebug("[INFO] Executando funcao (Service): Add Produto =>" + JsonSerializer.Serialize(produto));
             try {
@@ -34,6 +50,19 @@ namespace Armazenagem3L_API.Services {
 
         }
 
+        public string DeletarProduto(int id) {
+            _logger.LogDebug("[INFO] Executando funcao (Service): Deletar Produto =>" + JsonSerializer.Serialize(id));
+
+            Produto produto = _repository.GetProdutoById(id);
+            if (produto == null) {
+                return "Produto não encontrado";
+            }
+            _repository.Delete(produto);
+            if (_repository.SaveChanges()) {
+                return "Produto deletado com sucesso";
+            }
+            return "Não foi possível deletar o produto";
+        }
 
     }
 }
