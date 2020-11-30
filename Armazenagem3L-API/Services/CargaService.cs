@@ -1,7 +1,9 @@
-﻿using Armazenagem3L_API.Logger;
+﻿using Armazenagem3L_API.ExceptionHandler;
+using Armazenagem3L_API.Logger;
 using Armazenagem3L_API.Models;
 using Armazenagem3L_API.Repositories;
 using Armazenagem3L_API.Util;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -23,63 +25,92 @@ namespace Armazenagem3L_API.Services {
             _logger = logger;
         }
 
-        public Carga[] listagemCargas()
-        {
+        public CustomResponse listagemCargas() {
             _logger.LogDebug("[INFO] Executando funcao (Service): listagemProdutos");
 
-            Carga[] result = _repository.GetCargas();
+            try {
+                Carga[] result = _repository.GetCargas();
 
-            if(result.Length > 0) {
-                foreach (var item in result) {
-                    BuscaProdutos(item);
+                if (result.Length > 0) {
+                    foreach (var item in result) {
+                        BuscaProdutos(item);
+                    }
+                } else {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
                 }
+
+                return new CustomResponse(HttpStatusCode.OK, null, result);
+            } catch (ApiCustomException ex) {
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
 
-            return result;
         }
 
-        public Carga cargaByIdAndMotoristaId(int cargaId, int motoristaId)
-        {
+        public CustomResponse cargaByIdAndMotoristaId(int cargaId, int motoristaId) {
             _logger.LogDebug("[INFO] Executando funcao (Service): cargaByIdAndMotoristaId  => carga " + JsonSerializer.Serialize(cargaId) + " motorista " + JsonSerializer.Serialize(motoristaId));
 
-            var carga = _repository.cargaByIdAndMotoristaId(cargaId, motoristaId);
+            try {
+                var carga = _repository.cargaByIdAndMotoristaId(cargaId, motoristaId);
 
-            if (carga == null) {
-                return carga;
-            } else {
-                BuscaProdutos(carga);
-            }
-
-            return carga;
-        }
-
-        public Carga[] cargaByMotoristaId(int id)
-        {
-            _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
-
-            Carga[] result = _repository.cargaByMotoristaId(id);
-
-            if (result.Length > 0) {
-                foreach (var item in result) {
-                    BuscaProdutos(item);
+                if (carga == null) {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                } else {
+                    BuscaProdutos(carga);
                 }
+
+                return new CustomResponse(HttpStatusCode.OK, null, carga);
+            } catch (ApiCustomException ex) {
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
-            return result;
+
+
         }
 
-        public Carga cargaById(int id)
+        public CustomResponse cargaByMotoristaId(int id)
         {
             _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
 
-            Carga carga = _repository.GetCargaById(id);
+            try {
+                Carga[] result = _repository.cargaByMotoristaId(id);
 
-            if(carga == null) {
-                return carga;
-            } else {
-                BuscaProdutos(carga);
+                if (result.Length > 0) {
+                    foreach (var item in result) {
+                        BuscaProdutos(item);
+                    }
+                } else {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                }
+
+                return new CustomResponse(HttpStatusCode.OK, null, result);
+            } catch (ApiCustomException ex) {
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
+        }
 
-            return carga;
+        public CustomResponse cargaById(int id)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
+
+            try {
+                Carga carga = _repository.GetCargaById(id);
+
+                if (carga == null) {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                } else {
+                    BuscaProdutos(carga);
+                }
+                return new CustomResponse(HttpStatusCode.OK, null, carga);
+            } catch (ApiCustomException ex) {
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
+            }
         }
 
         public CustomResponse Add(Carga carga) {
@@ -94,10 +125,12 @@ namespace Armazenagem3L_API.Services {
                     foreach (var item in Ids) {
                         Produto p = _produto.GetProdutoById(item.ProdutoId);
                         if (p == null) {
-                            return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_BUSCA_PRODUTO));
+                            CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_BUSCA_PRODUTO);
+                            throw new ApiCustomException(JsonSerializer.Serialize(h));
                         } else {
                             if (item.Qtd > p.Qtd) {
-                                return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_SALVAR_CARGA));
+                                CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_SALVAR_CARGA);
+                                throw new ApiCustomException(JsonSerializer.Serialize(h));
                             } else {
                                 p.Qtd -= item.Qtd;
                                 ProdutosAlterados.Add(p);
@@ -106,21 +139,23 @@ namespace Armazenagem3L_API.Services {
 
                     }
 
-                    if(_repository.SaveChanges() == true) {
+                    if (_repository.SaveChanges() == true) {
                         AtualizaProdutos(ProdutosAlterados);
                         InsereCargaProdutos(carga.Produtos, _repository.GetLast().Id);
                         transaction.Complete();
                     } else {
                         transaction.Dispose();
-                        return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.CARGA_ADD_FALHA));
+                        CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_ADD_FALHA);
+                        throw new ApiCustomException(JsonSerializer.Serialize(h));
                     }
-                    
+
                 }
 
-                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.CARGA_ADD_SUCESSO));
-            } catch (HttpResponseException ex) {
+                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.CARGA_ADD_SUCESSO), null);
+            } catch (ApiCustomException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): Add Carga =>" + JsonSerializer.Serialize(ex.InnerException));
-                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, JsonSerializer.Serialize(ex.InnerException)));
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
         }
 
@@ -132,13 +167,49 @@ namespace Armazenagem3L_API.Services {
 
                 CargaEscolhida.MotoristaId = carga.MotoristaId;
                 _repository.Update(CargaEscolhida);
-                if(_repository.SaveChanges() == false) {
-                    return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.CARGA_ACEITA_ERRO));
+                if (_repository.SaveChanges() == false) {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_ACEITA_ERRO);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
                 }
-                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.CARGA_ACEITA));
-            } catch(HttpResponseException ex) {
+                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.CARGA_ACEITA), null);
+            } catch (ApiCustomException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): AceitarCarga Carga =>" + JsonSerializer.Serialize(ex.InnerException));
-                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, JsonSerializer.Serialize(ex.InnerException)));
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
+            }
+        }
+
+        public CustomResponse DeletarCarga(int id)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): DeletarCarga =>" + JsonSerializer.Serialize(id));
+            try {
+                Carga carga = _repository.FindById(id);
+                if (carga == null) {
+                    CustomHandler handler = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(handler));
+                } else {
+                    var ListaCargas = _repository.FindCargaProdutos(carga.Id);
+                    foreach (var item in ListaCargas) {
+                        _repository.DeleteCargaProduto(item);
+                    }
+                    _repository.DeleteCarga(carga);
+                }
+
+                if (_repository.SaveChanges()) {
+                    return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_CARGA), null);
+                }
+                CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_DELETAR_CARGA);
+                throw new ApiCustomException(JsonSerializer.Serialize(h));
+            } catch (HttpResponseException ex) {
+                _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): DeleteCarga =>" + JsonSerializer.Serialize(ex.InnerException));
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
+            }
+        }
+
+        private void AtualizaProdutos(ArrayList produtos) {
+            foreach (var item in produtos) {
+                _produto.Update((Produto)item);
             }
         }
 
@@ -150,45 +221,6 @@ namespace Armazenagem3L_API.Services {
             }
 
         }
-
-        public CustomResponse DeletarCarga(int id)
-        {
-            _logger.LogDebug("[INFO] Executando funcao (Service): DeletarCarga =>" + JsonSerializer.Serialize(id));
-            try
-            {
-                Carga carga = _repository.FindById(id);
-                if (carga == null)
-                {
-                    return new CustomResponse(HttpStatusCode.BadRequest, new CustomMessage(Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA));
-                }
-                else
-                {
-                    var ListaCargas = _repository.FindCargaProdutos(carga.Id);
-                    foreach (var item in ListaCargas)
-                    {
-                        _repository.DeleteCargaProduto(item);
-                    }
-                    _repository.DeleteCarga(carga);
-                }
-                
-                if (_repository.SaveChanges())
-                {
-                    return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_CARGA));
-                }
-                return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_DELETAR_CARGA));
-            }
-            catch (HttpResponseException ex)
-            {
-                _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): DeleteCarga =>" + JsonSerializer.Serialize(ex.InnerException));
-                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, JsonSerializer.Serialize(ex.InnerException)));
-            }
-        }
-
-        public void AtualizaProdutos(ArrayList produtos) {
-            foreach (var item in produtos) {
-                _produto.Update((Produto)item);
-            }
-        } 
 
         private void BuscaProdutos(Carga carga) {
 
