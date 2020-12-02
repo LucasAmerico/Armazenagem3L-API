@@ -10,10 +10,24 @@ namespace Armazenagem3L_API.Util {
 
         public HttpStatusCode StatusCode { get; set; }
         public CustomMessage Mensagem { get; set; }
+        public Object Objeto { get; set; }
+        public Object Retorno { get; set; }
 
-        public CustomResponse(HttpStatusCode StatusCode, CustomMessage Mensagem) {
+        public CustomResponse() {
+
+        }
+
+        public CustomResponse(HttpStatusCode StatusCode, CustomMessage Mensagem, Object Objeto) {
             this.StatusCode = StatusCode;
             this.Mensagem = Mensagem;
+            this.Objeto = Objeto;
+
+            if(this.StatusCode != HttpStatusCode.OK) {
+                this.Retorno = this.Mensagem;
+            } else {
+                this.Retorno = this.Objeto;
+            }
+
         }
 
     }

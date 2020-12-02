@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,13 +23,22 @@ namespace Armazenagem3L_API.Models {
 
         [Key]
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Campo Endereço faltando")]
         public string Endereco { get; set; }
+
+        [Required(ErrorMessage = "Campo Frete faltando")]
         public decimal Frete { get; set; }
+
         public int MotoristaId { get; set; }
 
         [NotMapped]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public IEnumerable<ProdutoQtd> Produtos { get; set; }
+
+        [NotMapped]
+        public ArrayList ListaProdutos { get; set; }
+
 
         [NotMapped]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]

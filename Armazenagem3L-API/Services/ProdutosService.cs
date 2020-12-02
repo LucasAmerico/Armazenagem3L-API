@@ -1,4 +1,5 @@
-﻿using Armazenagem3L_API.Logger;
+﻿using Armazenagem3L_API.ExceptionHandler;
+using Armazenagem3L_API.Logger;
 using Armazenagem3L_API.Models;
 using Armazenagem3L_API.Repositories;
 using Armazenagem3L_API.Util;
@@ -40,14 +41,15 @@ namespace Armazenagem3L_API.Services {
             try {
                 _repository.Add(produto);
                 if (_repository.SaveChanges() == false) {
-                    return new CustomResponse(HttpStatusCode.BadRequest, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_GERAL));
+                    CustomHandler handler = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_GERAL);
+                    throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
-                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.PRODUTO_ADD_SUCESSO));
+                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.PRODUTO_ADD_SUCESSO), null);
             } catch (HttpResponseException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): Add Produto =>" + JsonSerializer.Serialize(ex.InnerException));
-                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_GERAL));
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
-
         }
 
         public CustomResponse DeletarProduto(int id) {
@@ -55,17 +57,19 @@ namespace Armazenagem3L_API.Services {
             try {
                 Produto produto = _repository.GetProdutoById(id);
                 if (produto == null) {
-                    return new CustomResponse(HttpStatusCode.BadRequest, new CustomMessage(Mensagens.ERRO, Mensagens.PRODUTO_NAO_ENCONTRADO));
+                    CustomHandler handler = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.PRODUTO_NAO_ENCONTRADO);
+                    throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
                 _repository.Delete(produto);
-                if (_repository.SaveChanges()) {
-                    return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_PRODUTO));
+                if (_repository.SaveChanges() == false) {
+                    CustomHandler handler = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_DELETAR_PRODUTO);
+                    throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
-                return new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.ERRO_DELETAR_PRODUTO));
-            }
-            catch (HttpResponseException ex) {
+                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_PRODUTO), null);
+            } catch (HttpResponseException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): Add Produto =>" + JsonSerializer.Serialize(ex.InnerException));
-                return new CustomResponse(HttpStatusCode.InternalServerError, new CustomMessage(Mensagens.ERRO, JsonSerializer.Serialize(ex.InnerException)));
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
         }
 

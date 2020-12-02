@@ -36,7 +36,7 @@ namespace Armazenagem3L_API.Controllers {
         {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): GET Carga id =>" + JsonSerializer.Serialize(id));
 
-            var result = new object();
+            CustomResponse result = new CustomResponse();
 
             if (id == 0 && motorista == 0)
             {
@@ -54,7 +54,7 @@ namespace Armazenagem3L_API.Controllers {
             {
                 result = _service.cargaByIdAndMotoristaId(id, motorista);
             }
-            return Ok(result);
+            return StatusCode((int)result.StatusCode, result.Retorno);
         }
 
         // POST api/<ValuesController>
