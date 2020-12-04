@@ -35,6 +35,9 @@ namespace Armazenagem3L_API.Services {
                     foreach (var item in result) {
                         BuscaProdutos(item);
                     }
+                } else {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
                 }
 
                 return new CustomResponse(HttpStatusCode.OK, null, result);
