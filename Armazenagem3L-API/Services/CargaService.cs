@@ -226,9 +226,14 @@ namespace Armazenagem3L_API.Services {
 
             carga.Motorista = _motorista.FindById(carga.MotoristaId);
             var cargaProduto = _repository.FindCargaProdutos(carga.Id);
-            ArrayList produtos = new ArrayList();
+            List<ItemCargaProduto> produtos = new List<ItemCargaProduto>();
             foreach (var item in cargaProduto) {
-                produtos.Add(_produto.GetProdutoById(item.ProdutoId));
+                ItemCargaProduto itemCargaProduto = new ItemCargaProduto();
+
+                itemCargaProduto.Produto = _produto.GetProdutoById(item.ProdutoId);
+                itemCargaProduto.Quantidade = item.Qtd;
+
+                produtos.Add(itemCargaProduto);
             }
 
             carga.ListaProdutos = produtos;
