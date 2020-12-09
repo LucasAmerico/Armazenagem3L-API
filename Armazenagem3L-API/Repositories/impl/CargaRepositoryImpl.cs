@@ -96,5 +96,15 @@ namespace Armazenagem3L_API.Repositories.impl {
         public void Update(Carga carga) {
             _context.Entry(carga).State = EntityState.Modified;
         }
+
+        public void AddCargaRecusada(CargasRecusada cargaRecusada) {
+            _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): AddCargaRecusada =>" + JsonSerializer.Serialize(cargaRecusada));
+            _context.Add(cargaRecusada);
+        }
+
+        public IEnumerable<CargasRecusada> FindCargasRecusadas(int Id) {
+            _logger.LogDebug("[INFO] Executando CRUD no banco de dados: (Repository): FindCargaProdutos =>" + JsonSerializer.Serialize(Id));
+            return _context.CargasRecusadas.AsNoTracking().OrderBy(p => p.CargaId).Where(c => c.MotoristaId == Id).ToList();
+        }
     }
 }

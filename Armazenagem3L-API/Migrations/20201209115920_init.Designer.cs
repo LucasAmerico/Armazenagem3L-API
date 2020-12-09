@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Armazenagem3L_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201127141537_initial")]
-    partial class initial
+    [Migration("20201209115920_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,7 @@ namespace Armazenagem3L_API.Migrations
                         .UseIdentityByDefaultColumn();
 
                     b.Property<string>("Endereco")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal>("Frete")
@@ -57,6 +58,21 @@ namespace Armazenagem3L_API.Migrations
                     b.HasIndex("ProdutoId");
 
                     b.ToTable("CargaProdutos", "Armazenagem3L");
+                });
+
+            modelBuilder.Entity("Armazenagem3L_API.Models.CargasRecusada", b =>
+                {
+                    b.Property<int>("CargaId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MotoristaId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("CargaId", "MotoristaId");
+
+                    b.HasIndex("MotoristaId");
+
+                    b.ToTable("CargasRecusadas", "Armazenagem3L");
                 });
 
             modelBuilder.Entity("Armazenagem3L_API.Models.Funcionario", b =>
@@ -147,7 +163,7 @@ namespace Armazenagem3L_API.Migrations
                         new
                         {
                             Id = 3,
-                            Nome = "Teclkado",
+                            Nome = "Teclado",
                             Peso = 1m,
                             Preco = 1m,
                             Qtd = 300
@@ -156,6 +172,22 @@ namespace Armazenagem3L_API.Migrations
                         {
                             Id = 4,
                             Nome = "Monitor",
+                            Peso = 1m,
+                            Preco = 1m,
+                            Qtd = 300
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nome = "Dualshock 4",
+                            Peso = 1m,
+                            Preco = 1m,
+                            Qtd = 300
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Nome = "Dualsense",
                             Peso = 1m,
                             Preco = 1m,
                             Qtd = 300
@@ -179,6 +211,25 @@ namespace Armazenagem3L_API.Migrations
                     b.Navigation("Carga");
 
                     b.Navigation("Produto");
+                });
+
+            modelBuilder.Entity("Armazenagem3L_API.Models.CargasRecusada", b =>
+                {
+                    b.HasOne("Armazenagem3L_API.Models.Carga", "Carga")
+                        .WithMany()
+                        .HasForeignKey("CargaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Armazenagem3L_API.Models.Motorista", "Motorista")
+                        .WithMany()
+                        .HasForeignKey("MotoristaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Carga");
+
+                    b.Navigation("Motorista");
                 });
 #pragma warning restore 612, 618
         }

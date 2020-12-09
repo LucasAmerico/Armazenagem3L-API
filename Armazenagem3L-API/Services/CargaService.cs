@@ -176,6 +176,53 @@ namespace Armazenagem3L_API.Services {
             }
         }
 
+        public CustomResponse RecusarCarga(MotoristaCarga carga) {
+            _logger.LogDebug("[INFO] Executando funcao (Service): RecusarCarga Carga =>" + JsonSerializer.Serialize(carga));
+
+            try {
+                var CargaEscolhida = _repository.FindById(carga.CargaId);
+                var MotoristaEscolhido = _motorista.FindById(carga.MotoristaId);
+
+                if (CargaEscolhida == null) {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_NAO_ENCONTRADA);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                }
+
+                if (MotoristaEscolhido == null) {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.MOTORISTA_NAO_ENCONTRADO);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                }
+
+                CargasRecusada newCR = new CargasRecusada(CargaEscolhida.Id, MotoristaEscolhido.Id);
+                //newCR.Motorista = MotoristaEscolhido;
+                //newCR.Carga = CargaEscolhida;
+
+                _repository.AddCargaRecusada(newCR);
+                if (_repository.SaveChanges() == false) {
+                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_RECUSA_ERRO);
+                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                }
+                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.RECUSA_ACEITA), null);
+            } catch (ApiCustomException ex) {
+                _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): RecusarCarga Carga =>" + JsonSerializer.Serialize(ex.InnerException));
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
+            }
+        }
+
+        public CustomResponse cargasRecusadas(int id) {
+            _logger.LogDebug("[INFO] Executando funcao (Service): cargasRecusadas =>" + JsonSerializer.Serialize(id));
+
+            try {
+                var result = _repository.FindCargasRecusadas(id);
+
+                return new CustomResponse(HttpStatusCode.OK, null, result);
+            } catch (ApiCustomException ex) {
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
+            }
+        }
+
         public CustomResponse DeletarCarga(int id)
         {
             _logger.LogDebug("[INFO] Executando funcao (Service): DeletarCarga =>" + JsonSerializer.Serialize(id));

@@ -75,6 +75,23 @@ namespace Armazenagem3L_API.Controllers {
             return StatusCode((int)response.StatusCode, response.Mensagem);
         }
 
+        // POST api/recusarCarga
+        [HttpPost("recusarCarga")]
+        public IActionResult RecusarCarga([FromBody] MotoristaCarga value) {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): POST RecusarCarga =>" + JsonSerializer.Serialize(value));
+            CustomResponse response = _service.RecusarCarga(value);
+
+            return StatusCode((int)response.StatusCode, response.Mensagem);
+        }
+
+        // GET api/carga/recusadas/id
+        [HttpGet("recusadas/{id}")]
+        public IActionResult GetRecusadas(int id) {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): GetRecusadas =>" + JsonSerializer.Serialize(id));
+            CustomResponse result = _service.cargasRecusadas(id);
+            return StatusCode((int)result.StatusCode, result.Retorno);
+        }
+
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
