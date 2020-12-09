@@ -37,7 +37,7 @@ namespace Armazenagem3L_API.Models {
         public IEnumerable<ProdutoQtd> Produtos { get; set; }
 
         [NotMapped]
-        public ArrayList ListaProdutos { get; set; }
+        public List<ItemCargaProduto> ListaProdutos { get; set; }
 
 
         [NotMapped]
