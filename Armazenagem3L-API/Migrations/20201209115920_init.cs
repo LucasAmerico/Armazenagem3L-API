@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Armazenagem3L_API.Migrations
 {
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,7 +17,7 @@ namespace Armazenagem3L_API.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Endereco = table.Column<string>(type: "text", nullable: true),
+                    Endereco = table.Column<string>(type: "text", nullable: false),
                     Frete = table.Column<decimal>(type: "numeric", nullable: false),
                     MotoristaId = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -72,6 +72,33 @@ namespace Armazenagem3L_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CargasRecusadas",
+                schema: "Armazenagem3L",
+                columns: table => new
+                {
+                    CargaId = table.Column<int>(type: "integer", nullable: false),
+                    MotoristaId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CargasRecusadas", x => new { x.CargaId, x.MotoristaId });
+                    table.ForeignKey(
+                        name: "FK_CargasRecusadas_Cargas_CargaId",
+                        column: x => x.CargaId,
+                        principalSchema: "Armazenagem3L",
+                        principalTable: "Cargas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CargasRecusadas_Motoristas_MotoristaId",
+                        column: x => x.MotoristaId,
+                        principalSchema: "Armazenagem3L",
+                        principalTable: "Motoristas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CargaProdutos",
                 schema: "Armazenagem3L",
                 columns: table => new
@@ -119,8 +146,10 @@ namespace Armazenagem3L_API.Migrations
                 {
                     { 1, "Playstation 5", 1m, 1m, 300 },
                     { 2, "Mouse", 1m, 1m, 300 },
-                    { 3, "Teclkado", 1m, 1m, 300 },
-                    { 4, "Monitor", 1m, 1m, 300 }
+                    { 3, "Teclado", 1m, 1m, 300 },
+                    { 4, "Monitor", 1m, 1m, 300 },
+                    { 5, "Dualshock 4", 1m, 1m, 300 },
+                    { 6, "Dualsense", 1m, 1m, 300 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -128,6 +157,12 @@ namespace Armazenagem3L_API.Migrations
                 schema: "Armazenagem3L",
                 table: "CargaProdutos",
                 column: "ProdutoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CargasRecusadas_MotoristaId",
+                schema: "Armazenagem3L",
+                table: "CargasRecusadas",
+                column: "MotoristaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -137,11 +172,15 @@ namespace Armazenagem3L_API.Migrations
                 schema: "Armazenagem3L");
 
             migrationBuilder.DropTable(
+                name: "CargasRecusadas",
+                schema: "Armazenagem3L");
+
+            migrationBuilder.DropTable(
                 name: "Funcionarios",
                 schema: "Armazenagem3L");
 
             migrationBuilder.DropTable(
-                name: "Motoristas",
+                name: "Produtos",
                 schema: "Armazenagem3L");
 
             migrationBuilder.DropTable(
@@ -149,7 +188,7 @@ namespace Armazenagem3L_API.Migrations
                 schema: "Armazenagem3L");
 
             migrationBuilder.DropTable(
-                name: "Produtos",
+                name: "Motoristas",
                 schema: "Armazenagem3L");
         }
     }
