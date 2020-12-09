@@ -194,9 +194,6 @@ namespace Armazenagem3L_API.Services {
                 }
 
                 CargasRecusada newCR = new CargasRecusada(CargaEscolhida.Id, MotoristaEscolhido.Id);
-                //newCR.Motorista = MotoristaEscolhido;
-                //newCR.Carga = CargaEscolhida;
-
                 _repository.AddCargaRecusada(newCR);
                 if (_repository.SaveChanges() == false) {
                     CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_RECUSA_ERRO);
