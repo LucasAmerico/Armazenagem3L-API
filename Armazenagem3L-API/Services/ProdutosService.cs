@@ -20,20 +20,20 @@ namespace Armazenagem3L_API.Services {
             _logger = logger;
         }
 
-        public Produto[] listagemProdutos() {
+        public CustomResponse listagemProdutos() {
             _logger.LogDebug("[INFO] Executando funcao (Service): listagemProdutos");
 
             Produto[] result = _repository.GetProdutos();
 
-            return result;
+            return new CustomResponse(HttpStatusCode.OK, null, result);
         }
 
-        public Produto produtosById(int id) {
+        public CustomResponse produtosById(int id) {
             _logger.LogDebug("[INFO] Executando funcao (Service): ProdutosById  Produto =>" + JsonSerializer.Serialize(id));
 
             Produto result = _repository.GetProdutoById(id);
 
-            return result;
+            return new CustomResponse(HttpStatusCode.OK, null, result);
         }
         
         public CustomResponse Add(Produto produto) {
@@ -45,7 +45,7 @@ namespace Armazenagem3L_API.Services {
                     throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
                 return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.PRODUTO_ADD_SUCESSO), null);
-            } catch (HttpResponseException ex) {
+            } catch (ApiCustomException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): Add Produto =>" + JsonSerializer.Serialize(ex.InnerException));
                 CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
                 return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
@@ -66,7 +66,7 @@ namespace Armazenagem3L_API.Services {
                     throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
                 return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.DELETAR_PRODUTO), null);
-            } catch (HttpResponseException ex) {
+            } catch (ApiCustomException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): Add Produto =>" + JsonSerializer.Serialize(ex.InnerException));
                 CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
                 return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);

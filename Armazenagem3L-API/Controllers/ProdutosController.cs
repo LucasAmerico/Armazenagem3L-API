@@ -33,14 +33,15 @@ namespace Armazenagem3L_API.Controllers {
         public IActionResult Get(int id = 0) {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): GET Produto id =>" + JsonSerializer.Serialize(id));
 
-            var result = new object();
+            CustomResponse response = new CustomResponse();
 
             if (id == 0) {
-               result = _service.listagemProdutos();
+                response = _service.listagemProdutos();
             } else {
-                result = _service.produtosById(id);
+                response = _service.produtosById(id);
             }
-            return Ok(result);
+ 
+            return StatusCode((int)response.StatusCode, response.Mensagem);
         }
 
         // POST api/<ProdutosController>
