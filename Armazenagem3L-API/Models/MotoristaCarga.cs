@@ -8,5 +8,13 @@ namespace Armazenagem3L_API.Models {
 
         public int CargaId { get; set; }
         public int MotoristaId { get; set; }
+
+        public MotoristaCarga(int cargaId, int motoristaId) {
+            CargaId = cargaId;
+            MotoristaId = motoristaId;
+        }
+
+        public MotoristaCarga() {
+        }
     }
 }
