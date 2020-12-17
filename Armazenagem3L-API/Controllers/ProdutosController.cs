@@ -41,7 +41,7 @@ namespace Armazenagem3L_API.Controllers {
                 response = _service.produtosById(id);
             }
  
-            return StatusCode((int)response.StatusCode, response.Mensagem);
+            return StatusCode((int)response.StatusCode, response.Retorno);
         }
 
         // POST api/<ProdutosController>
