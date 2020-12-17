@@ -241,7 +241,7 @@ namespace Armazenagem3L_API.Services {
                 }
                 CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_DELETAR_CARGA);
                 throw new ApiCustomException(JsonSerializer.Serialize(h));
-            } catch (HttpResponseException ex) {
+            } catch (ApiCustomException ex) {
                 _logger.LogDebug("[ERRO] Ocorrencia de erro (Service): DeleteCarga =>" + JsonSerializer.Serialize(ex.InnerException));
                 CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
                 return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);

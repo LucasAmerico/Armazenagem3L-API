@@ -11,5 +11,14 @@ namespace Armazenagem3L_API.Models {
         public int Qtd { get; set; }
 
         public int CargaId { get; set; }
+
+        public ProdutoQtd() {
+        }
+
+        public ProdutoQtd(int produtoId, int qtd, int cargaId) {
+            ProdutoId = produtoId;
+            Qtd = qtd;
+            CargaId = cargaId;
+        }
     }
 }
