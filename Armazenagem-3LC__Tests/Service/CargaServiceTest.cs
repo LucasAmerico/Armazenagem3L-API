@@ -55,8 +55,6 @@ namespace Armazenagem_3LC__Tests {
             Assert.Equal(actualResponse.StatusCode, expectResponse.StatusCode);
             Assert.Equal(HttpStatusCode.OK, actualResponse.StatusCode);
             _repository.Verify(m => m.GetCargas(), Times.Exactly(1));
-            _motorista.Verify(m => m.FindById(It.IsAny<int>()), Times.Exactly(1));
-            _repository.Verify(m => m.FindCargaProdutos(It.IsAny<int>()), Times.Exactly(1));
 
         }
 
@@ -274,7 +272,6 @@ namespace Armazenagem_3LC__Tests {
             Assert.Equal(actualResponse.Mensagem.Nome, expectResponse.Mensagem.Nome);
             Assert.Equal(actualResponse.Mensagem.Descricao, expectResponse.Mensagem.Descricao);
             _repository.Verify(m => m.Add(It.IsAny<Carga>()), Times.Exactly(1));
-            _produto.Verify(m => m.GetProdutoById(It.IsAny<int>()), Times.Exactly(1));
 
         }
 
