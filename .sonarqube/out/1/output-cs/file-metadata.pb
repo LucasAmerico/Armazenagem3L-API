@@ -1,0 +1,7 @@
+o
+_C:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem-3LC__Tests\Service\CargaServiceTest.cswindows-1252s
+cC:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem-3LC__Tests\Service\MotoristaServiceTest.cswindows-1252q
+aC:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem-3LC__Tests\Service\ProdutoServiceTest.cswindows-1252|
+qC:\Users\DELL\.nuget\packages\microsoft.net.test.sdk\16.7.1\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.Program.csutf-8è
+ÉC:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem-3LC__Tests\obj\Debug\net5.0\.NETCoreApp,Version=v5.0.AssemblyAttributes.csutf-8Ü
+{C:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem-3LC__Tests\obj\Debug\net5.0\Armazenagem-3LC__Tests.AssemblyInfo.csutf-8

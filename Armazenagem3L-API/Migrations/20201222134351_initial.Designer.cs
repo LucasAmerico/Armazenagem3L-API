@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Armazenagem3L_API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201209115920_init")]
-    partial class init
+    [Migration("20201222134351_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,7 +104,20 @@ namespace Armazenagem3L_API.Migrations
                         .HasColumnType("integer")
                         .UseIdentityByDefaultColumn();
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -115,7 +128,10 @@ namespace Armazenagem3L_API.Migrations
                         new
                         {
                             Id = 1,
-                            Nome = "Bino"
+                            Email = "bino_cilada@gmail.com",
+                            Login = "bino",
+                            Nome = "Bino",
+                            Senha = "cargapesada"
                         });
                 });
 

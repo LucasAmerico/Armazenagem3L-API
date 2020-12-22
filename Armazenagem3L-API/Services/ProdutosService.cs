@@ -40,7 +40,7 @@ namespace Armazenagem3L_API.Services {
             _logger.LogDebug("[INFO] Executando funcao (Service): Add Produto =>" + JsonSerializer.Serialize(produto));
             try {
                 _repository.Add(produto);
-                if (_repository.SaveChanges() == false) {
+                if (!_repository.SaveChanges()) {
                     CustomHandler handler = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_GERAL);
                     throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
@@ -61,7 +61,7 @@ namespace Armazenagem3L_API.Services {
                     throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
                 _repository.Delete(produto);
-                if (_repository.SaveChanges() == false) {
+                if (!_repository.SaveChanges()) {
                     CustomHandler handler = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.ERRO_DELETAR_PRODUTO);
                     throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }

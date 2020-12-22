@@ -42,6 +42,8 @@ namespace Armazenagem3L_API {
             });
 
             services.AddScoped<IMotoristaRepository, MotoristaRepositoryImpl>();
+            services.AddScoped<MotoristaService, MotoristaService>();
+
             services.AddScoped<ICargaRepository, CargaRepositoryImpl>();
             services.AddScoped<CargaService, CargaService>();
 

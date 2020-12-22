@@ -136,7 +136,7 @@ namespace Armazenagem3L_API.Services {
 
                     }
 
-                    if (_repository.SaveChanges() == true) {
+                    if (!_repository.SaveChanges()) {
                         AtualizaProdutos(ProdutosAlterados);
                         InsereCargaProdutos(carga.Produtos, _repository.GetLast().Id);
                         transaction.Complete();
@@ -164,7 +164,7 @@ namespace Armazenagem3L_API.Services {
 
                 CargaEscolhida.MotoristaId = carga.MotoristaId;
                 _repository.Update(CargaEscolhida);
-                if (_repository.SaveChanges() == false) {
+                if (!_repository.SaveChanges()) {
                     CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_ACEITA_ERRO);
                     throw new ApiCustomException(JsonSerializer.Serialize(h));
                 }
@@ -195,7 +195,7 @@ namespace Armazenagem3L_API.Services {
 
                 CargasRecusada newCR = new CargasRecusada(CargaEscolhida.Id, MotoristaEscolhido.Id);
                 _repository.AddCargaRecusada(newCR);
-                if (_repository.SaveChanges() == false) {
+                if (!_repository.SaveChanges()) {
                     CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.CARGA_RECUSA_ERRO);
                     throw new ApiCustomException(JsonSerializer.Serialize(h));
                 }
@@ -255,7 +255,6 @@ namespace Armazenagem3L_API.Services {
         }
 
         private void InsereCargaProdutos(IEnumerable<ProdutoQtd> produtos, int id) {
-            ArrayList Cargas = new ArrayList();
             foreach (var item in produtos) {
                 _repository.AddCargaProdutos(new CargaProduto(id, item.ProdutoId, item.Qtd));
                 _repository.SaveChanges();

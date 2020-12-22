@@ -8,12 +8,16 @@ namespace Armazenagem3L_API.Util {
         public const string SUCESSO = "Sucesso";
         public const string ERRO = "Erro";
         public const string PRODUTO_ADD_SUCESSO = "Produto criado com sucesso!";
+        public const string MOTORISTA_ADD_SUCESSO = "Motorista adicionado com sucesso!";
+        public const string SENHA_ATT_SUCESSO = "Senha Alterada com sucesso!";
         public const string CARGA_ADD_SUCESSO = "Carga Adicionada com sucesso!";
         public const string CARGA_ADD_FALHA = "Erro no processo de criação de carga!";
         public const string CARGA_ACEITA = "A Carga foi atribuida com sucesso ao Motorista!";
         public const string RECUSA_ACEITA = "A Carga foi Recusada com sucesso ao Motorista!";
         public const string CARGA_ACEITA_ERRO = "Não foi possivel atribuir a carga ao Motorista!";
         public const string CARGA_RECUSA_ERRO = "Não foi possivel recusar a carga ao Motorista!";
+        public const string ERRO_EMAIL = "Já existe um cadastro com esse email, tente novamente com outro!";
+        public const string ERRO_LOGIN = "Já existe um cadastro com esse login, tente novamente com outro!";
         public const string ERRO_GERAL = "Não foi possível realizar a operação desejada, tente novamente mais tarde!";
         public const string ERRO_BUSCA_PRODUTO = "Não foi possível realizar a operação desejada, um produto da lista não existe!";
         public const string ERRO_SALVAR_CARGA = "A quatidade de um produto excede seu estoque!";
