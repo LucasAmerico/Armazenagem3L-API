@@ -1,6 +1,0 @@
-projectKey=alexandria-armazem3l
-serverUrl=https://sonar.dtidigital.com.br
-serverVersion=7.7.0.23042
-dashboardUrl=https://sonar.dtidigital.com.br/dashboard?id=alexandria-armazem3l
-ceTaskId=AXaK_mRGFmFgdrXzBeWV
-ceTaskUrl=https://sonar.dtidigital.com.br/api/ce/task?id=AXaK_mRGFmFgdrXzBeWV
