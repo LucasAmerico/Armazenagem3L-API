@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Armazenagem3L_API.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,7 +47,10 @@ namespace Armazenagem3L_API.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Nome = table.Column<string>(type: "text", nullable: true)
+                    Nome = table.Column<string>(type: "text", nullable: false),
+                    Login = table.Column<string>(type: "text", nullable: false),
+                    Senha = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,8 +138,8 @@ namespace Armazenagem3L_API.Migrations
             migrationBuilder.InsertData(
                 schema: "Armazenagem3L",
                 table: "Motoristas",
-                columns: new[] { "Id", "Nome" },
-                values: new object[] { 1, "Bino" });
+                columns: new[] { "Id", "Email", "Login", "Nome", "Senha" },
+                values: new object[] { 1, "bino_cilada@gmail.com", "bino", "Bino", "cargapesada" });
 
             migrationBuilder.InsertData(
                 schema: "Armazenagem3L",

@@ -15,23 +15,23 @@ namespace Armazenagem3L_API.Data {
         public DbSet<CargaProduto> CargaProdutos { get; set; }
         public DbSet<CargasRecusada> CargasRecusadas { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder) {
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
-            builder.Entity<CargaProduto>().HasKey(AD => new { AD.CargaId, AD.ProdutoId });
+            modelBuilder.Entity<CargaProduto>().HasKey(AD => new { AD.CargaId, AD.ProdutoId });
 
-            builder.Entity<CargasRecusada>().HasKey(AD => new { AD.CargaId, AD.MotoristaId });
+            modelBuilder.Entity<CargasRecusada>().HasKey(AD => new { AD.CargaId, AD.MotoristaId });
 
-            builder.Entity<Funcionario>()
+            modelBuilder.Entity<Funcionario>()
                     .HasData(new List<Funcionario>(){
                     new Funcionario(1, "Lauro"),
                     });
 
-            builder.Entity<Motorista>()
+            modelBuilder.Entity<Motorista>()
                     .HasData(new List<Motorista>(){
-                    new Motorista(1, "Bino"),
+                    new Motorista(1, "Bino", "bino", "cargapesada", "bino_cilada@gmail.com"),
                     });
 
-            builder.Entity<Produto>()
+            modelBuilder.Entity<Produto>()
                     .HasData(new List<Produto>(){
                     new Produto(1, "Playstation 5", 1, 1, 300),
                     new Produto(2, "Mouse", 1, 1, 300),

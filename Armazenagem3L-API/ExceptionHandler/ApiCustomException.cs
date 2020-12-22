@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace Armazenagem3L_API.ExceptionHandler {
+    [Serializable]
     public class ApiCustomException : Exception {
 
         public ApiCustomException() {
@@ -13,5 +15,8 @@ namespace Armazenagem3L_API.ExceptionHandler {
 
         }
 
+        protected ApiCustomException(SerializationInfo info, StreamingContext context) : base(info, context) {
+
+        }
     }
 }
