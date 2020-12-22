@@ -136,7 +136,7 @@ namespace Armazenagem3L_API.Services {
 
                     }
 
-                    if (!_repository.SaveChanges()) {
+                    if (_repository.SaveChanges()) {
                         AtualizaProdutos(ProdutosAlterados);
                         InsereCargaProdutos(carga.Produtos, _repository.GetLast().Id);
                         transaction.Complete();
