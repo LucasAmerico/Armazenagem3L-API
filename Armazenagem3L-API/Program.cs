@@ -8,8 +8,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Armazenagem3L_API {
-    public class Program {
-        public static void Main(string[] args) {
+    protected class Program
+    {
+    public static void Main(string[] args) {
             CreateHostBuilder(args).Build().Run();
         }
 

@@ -24,12 +24,6 @@ namespace Armazenagem3L_API.Controllers {
             _service = service;
         }
 
-        // GET: api/<ValuesController>
-        [HttpGet]
-        public IEnumerable<string> Get() {
-            return new string[] { "value1", "value2" };
-        }
-
         // GET api/carga/listagem?id=5&motorista=1
         [HttpGet("listagem")]
         public IActionResult Get(int id = 0, int motorista = 0)
