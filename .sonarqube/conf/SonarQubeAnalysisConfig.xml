@@ -104,6 +104,7 @@
   <LocalSettings>
     <Property Name="sonar.host.url">https://sonar.dtidigital.com.br</Property>
     <Property Name="sonar.cs.opencover.reportsPaths">results.xml</Property>
+    <Property Name="sonar.coverage.exclusions">**/Controllers/*.cs,**/Models/*.cs,**/Data/*.cs,**/ExceptionHandler/*.cs,**/Logger/*.cs,**/Logger/Impl/*.cs,**/Repositories/*.cs,**/Repositories/impl/*.cs,**/Migrations/*.cs,**/Program.cs,**/Startup.cs</Property>
   </LocalSettings>
   <AnalyzersSettings>
     <AnalyzerSettings>

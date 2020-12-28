@@ -71,7 +71,9 @@ namespace Armazenagem3L_API.Services {
                     throw new ApiCustomException(JsonSerializer.Serialize(handler));
                 }
 
-                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.SENHA_ATT_SUCESSO), null);
+                CustomResponse r = new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.SUCESSO, Mensagens.SENHA_ATT_SUCESSO), null);
+
+                return r;
             } catch (ApiCustomException ex) {
                 CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
                 return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);

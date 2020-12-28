@@ -34,15 +34,15 @@ namespace Armazenagem3L_API.Controllers {
         }
 
         // GET api/motorista/id
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public IActionResult Get(int id) {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): Get =>" + JsonSerializer.Serialize(id));
             CustomResponse result = _service.FindById(id);
             return StatusCode((int)result.StatusCode, result.Retorno);
         }
 
-        // GET api/motorista/id
-        [HttpPost("/login")]
+        // GET api/motorista/login
+        [HttpPost("login")]
         public IActionResult Login([FromBody] DadosMotorista value) {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): Login =>" + JsonSerializer.Serialize(value));
             CustomResponse result = _service.login(value);
@@ -50,7 +50,7 @@ namespace Armazenagem3L_API.Controllers {
         }
 
         // POST api/<ValuesController>
-        [HttpPut]
+        [HttpPut("recuperar")]
         public IActionResult Put([FromBody] DadosMotorista value) {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): Put Motorista =>" + JsonSerializer.Serialize(value));
             CustomResponse response = _service.RecuperarSenha(value);

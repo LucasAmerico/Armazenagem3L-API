@@ -49,7 +49,7 @@ namespace Armazenagem3L_API.Controllers {
         public IActionResult Post([FromBody] Produto produto) {
           _logger.LogDebug("[INFO] Recebendo requisicao (Controller): POST Produto =>" + JsonSerializer.Serialize(produto));
           CustomResponse response = _service.Add(produto);
-          return StatusCode((int)response.StatusCode, response.Mensagem);
+          return StatusCode((int)response.StatusCode, response.Retorno);
         }
 
         // DELETE api/<ProdutosController>/5
@@ -57,7 +57,7 @@ namespace Armazenagem3L_API.Controllers {
         public IActionResult Delete(int id) {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): DELETE Produto id =>" + JsonSerializer.Serialize(id));
             CustomResponse response = _service.DeletarProduto(id);
-            return StatusCode((int)response.StatusCode, response.Mensagem);
+            return StatusCode((int)response.StatusCode, response.Retorno);
         }
     }
 }

@@ -6273,7 +6273,7 @@ bC:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem3L-API\Repositories\IPr
 ) 
 ; 
 } 
-} Єо
+} со
 WC:\Users\DELL\source\repos\Armazenagem3L-API\Armazenagem3L-API\Services\CargaService.cs
 	namespace 	
 Armazenagem3L_API
@@ -7196,23 +7196,21 @@ ProdutoQtdxx  *
 if
 ЛЛ 
 (
-ЛЛ 
-!
-ЛЛ 
+ЛЛ 
 _repository
-ЛЛ $
+ЛЛ #
 .
-ЛЛ$ %
+ЛЛ# $
 SaveChanges
-ЛЛ% 0
+ЛЛ$ /
 (
+ЛЛ/ 0
+)
 ЛЛ0 1
 )
 ЛЛ1 2
-)
-ЛЛ2 3
 {
-ЛЛ4 5
+ЛЛ3 4
 AtualizaProdutos
 ММ (
 (

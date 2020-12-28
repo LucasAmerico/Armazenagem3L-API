@@ -57,7 +57,7 @@ namespace Armazenagem3L_API.Controllers {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): POST Carga =>" + JsonSerializer.Serialize(value));
             CustomResponse response = _service.Add(value);
 
-            return StatusCode((int)response.StatusCode, response.Mensagem);
+            return StatusCode((int)response.StatusCode, response.Retorno);
         }
 
         // POST api/aceitarCarga
@@ -66,7 +66,7 @@ namespace Armazenagem3L_API.Controllers {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): POST AceitarCarga =>" + JsonSerializer.Serialize(value));
             CustomResponse response = _service.AceitarCarga(value);
 
-            return StatusCode((int)response.StatusCode, response.Mensagem);
+            return StatusCode((int)response.StatusCode, response.Retorno);
         }
 
         // POST api/recusarCarga
@@ -75,7 +75,7 @@ namespace Armazenagem3L_API.Controllers {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): POST RecusarCarga =>" + JsonSerializer.Serialize(value));
             CustomResponse response = _service.RecusarCarga(value);
 
-            return StatusCode((int)response.StatusCode, response.Mensagem);
+            return StatusCode((int)response.StatusCode, response.Retorno);
         }
 
         // GET api/carga/recusadas/id
@@ -92,7 +92,7 @@ namespace Armazenagem3L_API.Controllers {
         {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): DELETE Carga id =>" + JsonSerializer.Serialize(id));
             CustomResponse response = _service.DeletarCarga(id);
-            return StatusCode((int)response.StatusCode, response.Mensagem);
+            return StatusCode((int)response.StatusCode, response.Retorno);
         }
     }
 }

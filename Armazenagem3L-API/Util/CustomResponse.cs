@@ -22,7 +22,7 @@ namespace Armazenagem3L_API.Util {
             this.Mensagem = Mensagem;
             this.Objeto = Objeto;
 
-            if(this.StatusCode != HttpStatusCode.OK) {
+            if(Mensagem != null) {
                 this.Retorno = this.Mensagem;
             } else {
                 this.Retorno = this.Objeto;
