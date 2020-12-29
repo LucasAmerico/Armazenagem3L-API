@@ -77,6 +77,27 @@ namespace Armazenagem3L_API.Services {
                 return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
             }
         }
+        public CustomResponse VerificarEmail(DadosMotorista value)
+        {
+            _logger.LogDebug("[INFO] Executando funcao (Service): RecuperarSenha  =>" + JsonSerializer.Serialize(value));
+
+            try
+            {
+                Motorista motorista = _repository.FindByEmail(value.Email);
+
+                if (motorista == null)
+                {
+                    return new CustomResponse(HttpStatusCode.OK, null, false);
+                }
+
+                return new CustomResponse(HttpStatusCode.OK, null, true);
+            }
+            catch (ApiCustomException ex)
+            {
+                CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
+                return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
+            }
+        }
 
         public CustomResponse login(DadosMotorista value) {
             _logger.LogDebug("[INFO] Executando funcao (Service): Login  =>" + JsonSerializer.Serialize(value));

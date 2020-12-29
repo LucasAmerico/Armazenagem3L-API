@@ -58,6 +58,15 @@ namespace Armazenagem3L_API.Controllers {
             return StatusCode((int)response.StatusCode, response.Retorno);
         }
 
+        // POST api/motorista/verificar
+        [HttpPut("verificar")]
+        public IActionResult Verificar([FromBody] DadosMotorista value)
+        {
+            _logger.LogDebug("[INFO] Recebendo requisicao (Controller): Put Motorista =>" + JsonSerializer.Serialize(value));
+            CustomResponse response = _service.VerificarEmail(value);
+
+            return StatusCode((int)response.StatusCode, response.Retorno);
+        }
 
     }
 }
