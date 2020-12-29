@@ -63,7 +63,7 @@ namespace Armazenagem3L_API.Services {
                     throw new ApiCustomException(JsonSerializer.Serialize(h));
                 }
 
-                motorista.Senha = value.senha;
+                motorista.Senha = value.Senha;
                 _repository.Update(motorista);
 
                 if (!_repository.SaveChanges()) {
@@ -85,15 +85,14 @@ namespace Armazenagem3L_API.Services {
                 Motorista motorista = _repository.FindByLogin(value.Login);
 
                 if (motorista == null) {
-                    CustomHandler h = new CustomHandler(HttpStatusCode.UnprocessableEntity, Mensagens.ERRO, Mensagens.MOTORISTA_NAO_ENCONTRADO);
-                    throw new ApiCustomException(JsonSerializer.Serialize(h));
+                    return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.ERRO, Mensagens.LOGIN_INEXISTENTE), null);
                 }
 
-                if(value.senha == motorista.Senha) {
+                if(value.Senha == motorista.Senha) {
                     return new CustomResponse(HttpStatusCode.OK, null, true);
                 }
 
-                return new CustomResponse(HttpStatusCode.OK, null, false);
+                return new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.ERRO, Mensagens.LOGIN_FALHA), null);
             } catch (ApiCustomException ex) {
                 CustomHandler RecuperaExcecao = JsonSerializer.Deserialize<CustomHandler>(ex.Message);
                 return new CustomResponse(RecuperaExcecao.StatusCode, new CustomMessage(RecuperaExcecao.Nome, RecuperaExcecao.Descricao), null);
