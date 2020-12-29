@@ -59,7 +59,7 @@ namespace Armazenagem3L_API.Controllers {
         }
 
         // POST api/motorista/verificar
-        [HttpPut("verificar")]
+        [HttpPost("verificar")]
         public IActionResult Verificar([FromBody] DadosMotorista value)
         {
             _logger.LogDebug("[INFO] Recebendo requisicao (Controller): Put Motorista =>" + JsonSerializer.Serialize(value));
