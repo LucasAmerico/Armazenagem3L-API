@@ -219,7 +219,7 @@ namespace Armazenagem_3LC__Tests {
             MotoristaService _service = new MotoristaService(_repository.Object, _logger.Object);
             Motorista mockMotorista = MockProduto();
             DadosMotorista mockDados = MockDadosMotorista();
-            CustomResponse expectResponse = new CustomResponse(HttpStatusCode.UnprocessableEntity, new CustomMessage(Mensagens.ERRO, Mensagens.MOTORISTA_NAO_ENCONTRADO), null);
+            CustomResponse expectResponse = new CustomResponse(HttpStatusCode.OK, new CustomMessage(Mensagens.ERRO, Mensagens.MOTORISTA_NAO_ENCONTRADO), null);
 
             _repository.Setup(m => m.FindByLogin(It.IsAny<string>())).Returns((Motorista)null);
 
@@ -228,9 +228,7 @@ namespace Armazenagem_3LC__Tests {
 
             //ASSERTS
             Assert.Equal(actualResponse.StatusCode, expectResponse.StatusCode);
-            Assert.Equal(HttpStatusCode.UnprocessableEntity, actualResponse.StatusCode);
-            Assert.Equal(actualResponse.Mensagem.Descricao, expectResponse.Mensagem.Descricao);
-            Assert.Equal(actualResponse.Mensagem.Nome, expectResponse.Mensagem.Nome);
+            Assert.Equal(HttpStatusCode.OK, actualResponse.StatusCode);
             _repository.Verify(m => m.FindByLogin(It.IsAny<string>()), Times.Exactly(1));
 
         }
