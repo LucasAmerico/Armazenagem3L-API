@@ -10,6 +10,8 @@ namespace Armazenagem3L_API.Util {
         public const string PRODUTO_ADD_SUCESSO = "Produto criado com sucesso!";
         public const string MOTORISTA_ADD_SUCESSO = "Motorista adicionado com sucesso!";
         public const string SENHA_ATT_SUCESSO = "Senha Alterada com sucesso!";
+        public const string LOGIN_FALHA = "Login/Senha não correspondem!";
+        public const string LOGIN_INEXISTENTE = "Não existe motorista com esse login!";
         public const string CARGA_ADD_SUCESSO = "Carga Adicionada com sucesso!";
         public const string CARGA_ADD_FALHA = "Erro no processo de criação de carga!";
         public const string CARGA_ACEITA = "A Carga foi atribuida com sucesso ao Motorista!";

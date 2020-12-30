@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Armazenagem3L_API.Models {
     public class DadosMotorista {
 
-        public string senha { get; set; }
+        public string Senha { get; set; }
 
         public string Email { get; set; }
 
@@ -17,7 +17,7 @@ namespace Armazenagem3L_API.Models {
         }
 
         public DadosMotorista(string senha, string email, string login) {
-            this.senha = senha;
+            Senha = senha;
             Email = email;
             Login = login;
         }
