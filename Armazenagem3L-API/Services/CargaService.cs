@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Transactions;
-using System.Web.Http;
 
 namespace Armazenagem3L_API.Services {
     public class CargaService {
